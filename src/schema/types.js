@@ -1,8 +1,10 @@
 const typeDefs = `
   type User { id: String!, email: String!, password: String! }
+  type Post { id: String!, image: String! }
 
   type Query {
     allUsers: [User]
+    allPosts: [Post]
   }
 
   type Mutation {
@@ -20,6 +22,9 @@ const typeDefs = `
     deleteUser (
       id: String!
     ): User!
+
+    createPost (image: String!): Post!
+    deletePost (id: String!): Post!
   }
 `
 
