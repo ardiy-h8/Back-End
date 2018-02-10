@@ -14,7 +14,7 @@ app.use(cors())
 app.use(
   '/graphql',
   morgan('dev'),
-  bodyParser.json(),
+  bodyParser.json({limit: 1024*1024*2000, type: 'application/json'}),
   graphqlExpress({ schema })
 )
 app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }))
