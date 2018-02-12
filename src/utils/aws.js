@@ -8,20 +8,23 @@ AWS.config.update({
 const s3 = new AWS.S3()
 
 const decodeBase64Image = image => {
-  console.log(image)
-  const matches = image.match(/^data:([A-Za-z-+/]+);base64,(.+)$/)
-
-  if (!matches) {
-    const newDae = image.substring(13, image.length)
+  if (image.match(/^data:([A-Za-z-+/]+);base64,(.+)$/)) {
+    const matches = image.match(/^data:([A-Za-z-+/]+);base64,(.+)$/)
+    return {
+      mimetype: matches[1],
+      buffer: Buffer.from(matches[2], 'base64')
+    }
+  } else if (image.substr(0, 13) === 'data:;base64,') {
+    const dae = image.substring(13, image.length)
     return {
       mimetype: 'image/dae',
-      buffer: Buffer.from(newDae, 'base64')
+      buffer: Buffer.from(dae, 'base64')
     }
-  }
-
-  return {
-    mimetype: matches[1],
-    buffer: Buffer.from(matches[2], 'base64')
+  } else {
+    return {
+      mimetype: 'image/patt',
+      buffer: image
+    }
   }
 }
 
