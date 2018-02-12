@@ -8,6 +8,7 @@ AWS.config.update({
 const s3 = new AWS.S3()
 
 const decodeBase64Image = image => {
+  console.log(image)
   const matches = image.match(/^data:([A-Za-z-+/]+);base64,(.+)$/)
 
   if (!matches) {
