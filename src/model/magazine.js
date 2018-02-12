@@ -1,8 +1,9 @@
 import mongoose from 'mongoose'
 
 const Magazine = mongoose.model('magazines', {
-  name: { type: String, required: true },
-  cover: { type: String, required: true },
+  email: { type: String, required: true },
+  title: { type: String, required: true },
+  imagePreviewUrl: { type: String, required: true },
   object3d: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'objects'
