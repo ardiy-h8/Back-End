@@ -28,23 +28,30 @@ const decodeBase64Image = image => {
   }
 }
 
-const uploadS3 = image => {
-  const imageObj = decodeBase64Image(image)
-  const imageType = imageObj.mimetype.split('/')[1]
-
+const upload = (buffer, type) => {
   return new Promise((resolve, reject) => {
     s3.upload({
       Bucket: process.env.S3_BUCKET_NAME,
-      Key: `${Date.now()}.${imageType}`,
-      Body: imageObj.buffer,
+      Key: `${Date.now()}.${type}`,
+      Body: buffer,
       ACL: 'public-read',
       ContentEncoding: 'base64',
-      ContentType: `image/${imageType}`
+      ContentType: `image/${type}`
     }, (err, data) => {
       if (err) reject(err)
       resolve(data)
     })
   })
+}
+
+const uploadS3 = async file => {
+  if (typeof file === 'object') {
+    return upload(file, 'dae')
+  } else {
+    const imageObj = decodeBase64Image(file)
+    const imageType = imageObj.mimetype.split('/')[1]
+    return upload(imageObj.buffer, imageType)
+  }
 }
 
 export default uploadS3
