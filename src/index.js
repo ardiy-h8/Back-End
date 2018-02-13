@@ -21,4 +21,9 @@ app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }))
 
 connection.on('error', () => console.log('Error connecting to database'))
 connection.on('open', () => console.log('Connected to database'))
-app.listen(port, () => console.log(`API started on port ${port}`))
+
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => console.log(`API started on port ${port}`))
+}
+
+export default app

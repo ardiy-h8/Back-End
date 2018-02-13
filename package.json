@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon src --exec babel-node --presets env",
-    "test": "jest",
+    "build": "babel src -d dist --presets env",
+    "test": "NODE_ENV=test jest --config .jest.config.js --forceExit",
     "lint": "eslint --ext .js src",
     "format": "prettier --no-semi --single-quote --write src/*.js src/*/**.js"
   },
@@ -33,9 +34,7 @@
     "graphql-tools": "^2.20.1",
     "mongoose": "^5.0.3",
     "morgan": "^1.9.0",
-    "mz": "^2.7.0",
     "prettier": "^1.10.2",
-    "remove": "^0.1.5",
-    "supertest": "^3.0.0"
+    "remove": "^0.1.5"
   }
 }

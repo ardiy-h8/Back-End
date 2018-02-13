@@ -1,22 +1,26 @@
 const axios = require('axios')
 const toBeType = require('jest-tobetype')
-const request = require('supertest')
-const fs = require('mz/fs')
+const fs = require('fs')
+
+expect.extend(toBeType)
 
 const url = 'http://localhost:3001/graphql'
 let id = ''
 
-expect.extend(toBeType)
+const data = fs.readFileSync(`${__dirname}/assets/hp.jpg`, 'base64')
+const matches = data.match(/^data:([A-Za-z-+/]+);base64,(.+)$/)
+console.log(matches)
+// const buffer = Buffer.from(matches[2], 'base64')
 
 describe('Magazine resolvers', () => {
   test('Mutation createMagazine', async () => {
     const response = await axios.post(url, { query: `
       mutation {
         createMagazine (
-          name: "Harry Potter and the Philosopher's Stone",
-          cover: "https://vignette.wikia.nocookie.net/harrypotter/images/c/cb/Philosoper%27s_Stone_New_UK_Cover.jpg/revision/latest/scale-to-width-down/334?cb=20170109041611"
+          title: "Harry Potter and the Philosopher's Stone",
+          imagePreviewUrl: "${buffer}"
         ) {
-          id name cover object3d
+          id title imagePreviewUrl object3d
         }
       }
     `})
@@ -38,8 +42,8 @@ describe('Magazine resolvers', () => {
   test('Mutation updateMagazine', async () => {
     const response = await axios.post(url, { query: `
       mutation {
-        updateMagazine (id: "${id}", name: "Harry Potter and the Deathly Hallows") {
-          id name cover object3d
+        updateMagazine (id: "${id}", title: "Harry Potter and the Deathly Hallows") {
+          id title imagePreviewUrl object3d
         }
       }
     `})
@@ -61,7 +65,7 @@ describe('Magazine resolvers', () => {
     const response = await axios.post(url, { query: `
       mutation {
         deleteMagazine (id: "${id}") {
-          id name cover object3d
+          id title imagePreviewUrl object3d
         }
       }
     `})

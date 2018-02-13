@@ -10,6 +10,8 @@ expect.extend(toBeType)
 
 describe('Object 3D resolvers', () => {
   test('Mutation createObject3D', async () => {
-
+    /* const response = await axios.post(url, { query: `
+      mutation createObject3D
+    `}) */
   })
 })
