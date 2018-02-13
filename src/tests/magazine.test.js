@@ -4,82 +4,79 @@ const fs = require('fs')
 
 expect.extend(toBeType)
 
-const url = 'http://localhost:3001/graphql'
-let id = ''
+const uploadS3MockFn = require('./awsMock')
 
 const data = fs.readFileSync(`${__dirname}/assets/hp.jpg`, 'base64')
 const matches = data.match(/^data:([A-Za-z-+/]+);base64,(.+)$/)
 console.log(matches)
 // const buffer = Buffer.from(matches[2], 'base64')
 
+const url = 'http://localhost:3001/graphql'
+var id = ''
+const buffer = fs.readFileSync(`${__dirname}/assets/hp.jpg`)
+var imgUrl = ''
+
+
 describe('Magazine resolvers', () => {
+  beforeAll(async () => {
+     imgUrl =  await uploadS3MockFn(buffer);
+    return imgUrl
+  }, 10000);
+
   test('Mutation createMagazine', async () => {
     const response = await axios.post(url, { query: `
       mutation {
         createMagazine (
+          email: "azharie@mail.com",
           title: "Harry Potter and the Philosopher's Stone",
-          imagePreviewUrl: "${buffer}"
+          imagePreviewUrl: "${imgUrl.Location}"
         ) {
-          id title imagePreviewUrl object3d
-        }
+          id
+        } 
       }
     `})
-
     const { data: { data: { createMagazine }}} = response
-    id = createMagazine.id
-
     expect(createMagazine).toBeType('object')
-    expect(createMagazine).toHaveProperty('id')
-    expect(createMagazine).toHaveProperty('name')
-    expect(createMagazine).toHaveProperty('cover')
-    expect(createMagazine).toHaveProperty('object3d')
-    expect(createMagazine.id).toBeType('string')
-    expect(createMagazine.name).toBeType('string')
-    expect(createMagazine.cover).toBeType('string')
-    expect(createMagazine.object3d).toBeType('array')
+    id = createMagazine.id
+    
   })
 
   test('Mutation updateMagazine', async () => {
-    const response = await axios.post(url, { query: `
-      mutation {
-        updateMagazine (id: "${id}", title: "Harry Potter and the Deathly Hallows") {
-          id title imagePreviewUrl object3d
+    const response = await axios.post(url, {
+      query: `
+        mutation {
+          updateMagazine (
+            id: "${id}", 
+            cover: "${imgUrl.Location}",
+            name: "foo"
+          ) {
+            id
+          }
         }
-      }
-    `})
+      `})
 
-    const { data: { data: { updateMagazine }}} = response
-
+    const { data: { data: { updateMagazine } } } = response
     expect(updateMagazine).toBeType('object')
     expect(updateMagazine).toHaveProperty('id')
-    expect(updateMagazine).toHaveProperty('name')
-    expect(updateMagazine).toHaveProperty('cover')
-    expect(updateMagazine).toHaveProperty('object3d')
-    expect(updateMagazine.id).toBeType('string')
-    expect(updateMagazine.name).toBeType('string')
-    expect(updateMagazine.cover).toBeType('string')
-    expect(updateMagazine.object3d).toBeType('array')
+    expect(updateMagazine.id).toEqual(id)
   })
 
+
   test('Mutation deleteMagazine', async () => {
-    const response = await axios.post(url, { query: `
+    const response = await axios.post(url, {
+      query: `
       mutation {
         deleteMagazine (id: "${id}") {
-          id title imagePreviewUrl object3d
+          id
         }
       }
     `})
 
-    const { data: { data: { deleteMagazine }}} = response
-
+    const { data: { data: { deleteMagazine } } } = response
+    console.log(deleteMagazine, 'delet')
     expect(deleteMagazine).toBeType('object')
-    expect(deleteMagazine).toHaveProperty('id')
-    expect(deleteMagazine).toHaveProperty('name')
-    expect(deleteMagazine).toHaveProperty('cover')
-    expect(deleteMagazine).toHaveProperty('object3d')
-    expect(deleteMagazine.id).toBeType('string')
-    expect(deleteMagazine.name).toBeType('string')
-    expect(deleteMagazine.cover).toBeType('string')
-    expect(deleteMagazine.object3d).toBeType('array')
+    expect(deleteMagazine.id).toEqual(id)
   })
 })
+
+
