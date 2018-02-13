@@ -42,26 +42,6 @@ const createObject3D = async (_, args) => {
     $push: { object3d: objects._id }
   })
   return objects
-
-  /* files.forEach(async file => {
-    if (file.substr(-3) === 'dae') {
-      const bufferDae = fs.readFileSync(`${__dirname}/assets/${file}`)
-      const data = await uploadS3(bufferDae)
-      dae = data.Location
-
-      args.img_marker = markerUrl.Location
-      args.marker = patternUrl.Location
-      args.object3d = dae
-
-      const objects = await Object3D.create(args)
-      await Magazine.findByIdAndUpdate(args.mid, {
-        $push: { object3d: objects._id }
-      })
-      return objects
-    } else {
-      await uploadS3(file)
-    }
-  }) */
 }
 
 const deleteObject3D = (_, { id }) => Object3D.findByIdAndRemove(id)
