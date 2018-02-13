@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 const Post = mongoose.model('posts', {
-  image: String
+  zip_file: String
 })
 
 export default Post
