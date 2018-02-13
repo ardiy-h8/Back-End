@@ -75,3 +75,35 @@ describe('User resolvers', () => {
     expect(deleteUser).toHaveProperty('password')
   })
 })
+
+
+describe('write data user got wrong', () => {
+  var email = ''
+  var password = ''
+  test('should expect email toBe azharie@live.com', async () => {
+    const response = await axios.post(url, { query: `
+       mutation {
+        createUser (email: "${email}" , password: "letmein") {
+          id
+        }
+      }
+    `})
+    
+    const { data: { data: { createUser } } } = response
+    expect(createUser.email).toBe(undefined)
+  })
+
+  test('should expect email toBe azharie@live.com', async () => {
+    const response = await axios.post(url, {
+      query: `
+       mutation {
+        createUser (email: "azharie@live.com" , password: "${password}") {
+          id
+        }
+      }
+    `})
+
+    const { data: { data: { createUser } } } = response
+    expect(createUser.password).toBe(undefined)
+  })
+})
