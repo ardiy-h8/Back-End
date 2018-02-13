@@ -19,4 +19,6 @@ const createObject3D = async (_, args) => {
   return objects
 }
 
-export { createObject3D }
+const deleteObject3D = (_, { id }) => Object3D.findByIdAndRemove(id)
+
+export { createObject3D, deleteObject3D }

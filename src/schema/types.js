@@ -18,6 +18,7 @@ const typeDefs = `
     deleteMagazine ( id: String! ): Magazine!
 
     createObject3D ( mid: String! title: String! description: String! pages: Int! marker: String! img_marker: String! object3d: String! ): Object3D!
+    deleteObject3D ( id: String! ): Object3D!
   }
 `
 
