@@ -19,7 +19,7 @@ var imgUrl = ''
 
 describe('Magazine resolvers', () => {
   beforeAll(async () => {
-     imgUrl =  await uploadS3MockFn(buffer);
+     imgUrl =  await uploadS3MockFn(buffer, 'ardy-test');
     return imgUrl
   }, 10000);
 

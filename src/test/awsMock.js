@@ -8,21 +8,24 @@ AWS.config.update({
 const s3 = new AWS.S3()
 
 
-const uploadS3MockFn = imgBuffer => {
+const uploadS3MockFn = (imgBuffer, bucket) => {
   // const imageObj = decodeBase64Image(image)
   const imageType = 'jpg'
-  
   return new Promise((resolve, reject) => {
     s3.upload({
-      Bucket: 'ardy-test',
+      Bucket: `${bucket}`,
       Key: `${Date.now()}.${imageType}`,
       Body: imgBuffer,
       ACL: 'public-read',
       ContentEncoding: 'base64',
       ContentType: `image/${imageType}`
     }, (err, data) => {
-      if (err) reject(err)
-      resolve(data)
+      if (err) {
+        console.log(err)
+        reject(err)
+      } else {
+        resolve(data)
+      }
     })
   })
 }
