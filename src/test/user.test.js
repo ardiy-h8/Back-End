@@ -80,7 +80,7 @@ describe('User resolvers', () => {
 describe('write data user got wrong', () => {
   var email = ''
   var password = ''
-  test('should expect email toBe azharie@live.com', async () => {
+  test('should expect email toBe undefined', async () => {
     const response = await axios.post(url, { query: `
        mutation {
         createUser (email: "${email}" , password: "letmein") {
@@ -93,7 +93,7 @@ describe('write data user got wrong', () => {
     expect(createUser.email).toBe(undefined)
   })
 
-  test('should expect email toBe azharie@live.com', async () => {
+  test('should expect password toBe undefined', async () => {
     const response = await axios.post(url, {
       query: `
        mutation {

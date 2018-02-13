@@ -73,7 +73,6 @@ describe('Magazine resolvers', () => {
     `})
 
     const { data: { data: { deleteMagazine } } } = response
-    console.log(deleteMagazine, 'delet')
     expect(deleteMagazine).toBeType('object')
     expect(deleteMagazine.id).toEqual(id)
   })
