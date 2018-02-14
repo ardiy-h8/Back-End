@@ -29,15 +29,17 @@ const decodeBase64Image = image => {
 }
 
 const upload = (buffer, type) => {
+  const params = {
+    Bucket: 'ardy-test',
+    Key: `${Date.now()}.${type}`,
+    Body: buffer,
+    ACL: 'public-read',
+    ContentEncoding: 'base64',
+    ContentType: `image/${type}`
+  }
+
   return new Promise((resolve, reject) => {
-    s3.upload({
-      Bucket: process.env.S3_BUCKET_NAME,
-      Key: `${Date.now()}.${type}`,
-      Body: buffer,
-      ACL: 'public-read',
-      ContentEncoding: 'base64',
-      ContentType: `image/${type}`
-    }, (err, data) => {
+    s3.upload(params, (err, data) => {
       if (err) reject(err)
       resolve(data)
     })
