@@ -37,6 +37,8 @@ const createObject3D = async (_, args) => {
   args.marker = patternUrl.Location
   args.object3d = dae
 
+  console.log('got marker', patternUrl)
+
   const objects = await Object3D.create(args)
   await Magazine.findByIdAndUpdate(args.mid, {
     $push: { object3d: objects._id }
