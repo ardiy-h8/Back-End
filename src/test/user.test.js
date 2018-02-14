@@ -91,6 +91,25 @@ describe('write data user got wrong', () => {
     
     const { data: { data: { createUser } } } = response
     expect(createUser.email).toBe(undefined)
+    id = createUser.id
+  })
+
+  test('Mutation deleteUser', async () => {
+    const response = await axios.post(url, {
+      query: `
+      mutation {
+        deleteUser (id: "${id}") {
+          id email password
+        }
+      }
+    `})
+
+    const { data: { data: { deleteUser } } } = response
+
+    expect(deleteUser).toBeType('object')
+    expect(deleteUser).toHaveProperty('id')
+    expect(deleteUser).toHaveProperty('email')
+    expect(deleteUser).toHaveProperty('password')
   })
 
   test('should expect password toBe undefined', async () => {
@@ -104,6 +123,43 @@ describe('write data user got wrong', () => {
     `})
 
     const { data: { data: { createUser } } } = response
+    id = createUser.id
     expect(createUser.password).toBe(undefined)
+  })
+
+  test('Mutation updateUser', async () => {
+    const response = await axios.post(url, {
+      query: `
+      mutation {
+        updateUser (id: "${id}", email: "yofri@mail.com", password: "letmeout") {
+          id email password
+        }
+      }
+    `})
+
+    const { data: { data: { updateUser } } } = response
+    id = updateUser.id
+    expect(updateUser).toBeType('object')
+    expect(updateUser).toHaveProperty('id')
+    expect(updateUser).toHaveProperty('email')
+    expect(updateUser).toHaveProperty('password')
+  })
+
+  test('Mutation deleteUser', async () => {
+    const response = await axios.post(url, {
+      query: `
+      mutation {
+        deleteUser (id: "${id}") {
+          id email password
+        }
+      }
+    `})
+
+    const { data: { data: { deleteUser } } } = response
+
+    expect(deleteUser).toBeType('object')
+    expect(deleteUser).toHaveProperty('id')
+    expect(deleteUser).toHaveProperty('email')
+    expect(deleteUser).toHaveProperty('password')
   })
 })

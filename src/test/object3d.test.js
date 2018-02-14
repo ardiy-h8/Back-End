@@ -21,7 +21,7 @@ describe('Object 3D resolvers', () => {
           object3d: "foigjiogj"
         ) { id, marker }
       }  
-    `})
+    `}, jest.setTimeout(15000))
     const {data: { data: { createObject3D }}} = response
     expect(createObject3D).toBeType('object')
     expect(createObject3D).toHaveProperty('marker')
@@ -65,9 +65,27 @@ describe('write data Object3ds got wrong', () => {
         ) { id, marker }
       }  
     `})
-
+    
     const { data: { data: { createObject3D } } } = response
     expect(createObject3D.title).toBe(undefined)
+    id = createObject3D.id
+  })
+
+  test('Mutation deleteObject3D', async () => {
+    const response = await axios.post(url, {
+      query: `
+      mutation {
+        deleteObject3D (
+          id: "${id}"
+        ) {
+          id
+        }
+      }
+    `})
+    const { data: { data: { deleteObject3D } } } = response
+    expect(deleteObject3D).toBeType('object')
+    expect(deleteObject3D.id).toEqual(id)
+    
   })
 
   test('should expect marker toBe string', async () => {
@@ -88,5 +106,25 @@ describe('write data Object3ds got wrong', () => {
 
     const { data: { data: { createObject3D } } } = response
     expect(createObject3D.description).toEqual(undefined)
+    id = createObject3D.id
+    
   })
+
+  test('Mutation deleteObject3D', async () => {
+    const response = await axios.post(url, {
+      query: `
+      mutation {
+        deleteObject3D (
+          id: "${id}"
+        ) {
+          id
+        }
+      }
+    `})
+    const { data: { data: { deleteObject3D } } } = response
+    expect(deleteObject3D).toBeType('object')
+    expect(deleteObject3D.id).toEqual(id)
+
+  })
+
 })
