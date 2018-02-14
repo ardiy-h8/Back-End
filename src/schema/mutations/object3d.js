@@ -1,6 +1,7 @@
 import fs from 'fs'
 import download from 'download'
 import s3FolderUpload from 's3-folder-upload'
+import rimraf from 'rimraf'
 
 import { Object3D, Magazine } from '../../model'
 import { uploadS3 } from '../../utils'
@@ -41,6 +42,8 @@ const createObject3D = async (_, args) => {
   await Magazine.findByIdAndUpdate(args.mid, {
     $push: { object3d: objects._id }
   })
+
+  rimraf.sync(`${__dirname}/assets`)
   return objects
 }
 
