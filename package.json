@@ -8,7 +8,7 @@
   "scripts": {
     "start": "nodemon src --exec babel-node --presets env",
     "build": "babel src -d dist --presets env",
-    "test": "NODE_ENV=test jest --config .jest.config.js --forceExit",
+    "test": "jest",
     "lint": "eslint --ext .js src",
     "format": "prettier --no-semi --single-quote --write src/*.js src/*/**.js"
   },
