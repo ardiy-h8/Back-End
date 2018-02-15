@@ -11,59 +11,47 @@ var _require = require('../utils'),
 
 expect.extend(toBeType);
 
-var data = fs.readFileSync(__dirname + '/assets/hp.jpg', 'base64');
-var matches = data.match(/^data:([A-Za-z-+/]+);base64,(.+)$/);
-
 var url = 'http://localhost:3001/graphql';
 var id = '';
-var buffer = fs.readFileSync(__dirname + '/assets/hp.jpg');
-var base64 = 'data:image/jpeg;base64,' + Buffer.from(buffer, 'ascii').toString('base64');
-var imgUrl = '';
 
 describe('Magazine resolvers', function () {
-  beforeAll(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+  beforeAll(function () {
+    // const buffer = fs.readFileSync(`${__dirname}/assets/hp.jpg`)
+    // const base64 = 'data:image/jpeg;base64,' + Buffer.from(buffer, 'ascii').toString('base64')
+    // let imgUrl = ''
+    //  uploadS3(base64)
+  });
+
+  test('Mutation createMagazine', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    var buffer, base64, imgUrl, response, createMagazine;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.next = 2;
+            buffer = fs.readFileSync(__dirname + '/assets/hp.jpg');
+            base64 = 'data:image/jpeg;base64,' + Buffer.from(buffer, 'ascii').toString('base64');
+            _context.next = 4;
             return uploadS3(base64);
 
-          case 2:
+          case 4:
             imgUrl = _context.sent;
-
-          case 3:
-          case 'end':
-            return _context.stop();
-        }
-      }
-    }, _callee, undefined);
-  })));
-  console.log('got url', imgUrl);
-
-  test('Mutation createMagazine', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-    var response, createMagazine;
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            _context2.next = 2;
+            _context.next = 7;
             return axios.post(url, { query: '\n      mutation {\n        createMagazine (\n          email: "azharie@mail.com",\n          title: "Harry Potter and the Philosopher\'s Stone",\n          imagePreviewUrl: "' + imgUrl.Location + '"\n        ) {\n          id\n        }\n      }\n    ' });
 
-          case 2:
-            response = _context2.sent;
+          case 7:
+            response = _context.sent;
             createMagazine = response.data.data.createMagazine;
 
             id = createMagazine.id;
 
             expect(createMagazine).toBeType('object');
 
-          case 6:
+          case 11:
           case 'end':
-            return _context2.stop();
+            return _context.stop();
         }
       }
-    }, _callee2, undefined);
+    }, _callee, undefined);
   })));
 
   /* test('Mutation updateMagazine', async () => {

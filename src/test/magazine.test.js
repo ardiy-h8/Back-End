@@ -11,13 +11,16 @@ let id = ''
 
 describe('Magazine resolvers', () => {
   beforeAll(() => {
-    const buffer = fs.readFileSync(`${__dirname}/assets/hp.jpg`)
-    const base64 = 'data:image/jpeg;base64,' + Buffer.from(buffer, 'ascii').toString('base64')
-    let imgUrl = ''
-     uploadS3(base64)
+    // const buffer = fs.readFileSync(`${__dirname}/assets/hp.jpg`)
+    // const base64 = 'data:image/jpeg;base64,' + Buffer.from(buffer, 'ascii').toString('base64')
+    // let imgUrl = ''
+    //  uploadS3(base64)
   })
 
   test('Mutation createMagazine', async () => {
+    const buffer = fs.readFileSync(`${__dirname}/assets/hp.jpg`)
+    const base64 = 'data:image/jpeg;base64,' + Buffer.from(buffer, 'ascii').toString('base64')
+    const imgUrl = await uploadS3(base64)
     const response = await axios.post(url, { query: `
       mutation {
         createMagazine (

@@ -24,7 +24,6 @@ var s3 = new _awsSdk2.default.S3();
 var decodeBase64Image = function decodeBase64Image(image) {
   if (image.match(/^data:([A-Za-z-+/]+);base64,(.+)$/)) {
     var matches = image.match(/^data:([A-Za-z-+/]+);base64,(.+)$/);
-    console.log('matches', matches.length);
     return {
       mimetype: matches[1],
       buffer: Buffer.from(matches[2], 'base64')
