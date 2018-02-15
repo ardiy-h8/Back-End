@@ -32,6 +32,7 @@ const createObject3D = async (_, args) => {
     } else {
       s3FolderUpload(`${__dirname}/assets/${files[i]}`, credentials)
     }
+    rimraf.sync(`${__dirname}/assets/${files[i]}`)
   }
 
   args.img_marker = markerUrl.Location
@@ -43,7 +44,7 @@ const createObject3D = async (_, args) => {
     $push: { object3d: objects._id }
   })
 
-  rimraf.sync(`${__dirname}/assets`)
+  // rimraf.sync(`${__dirname}/assets`)
   return objects
 }
 
